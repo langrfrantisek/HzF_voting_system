@@ -28,7 +28,7 @@ const int logo_sw_pin = 2;  // input pin for LOGO switch
 bool logo_sw_value = 0;     // variable to store LOGO switch state
 
 // variable to store band votes
-uint8_t first_band_votes = 0;  
+uint8_t first_band_votes = 0;
 uint8_t second_band_votes = 0;
 uint8_t third_band_votes = 0;
 uint8_t fourth_band_votes = 0;
@@ -43,6 +43,10 @@ void setup() {
   // LCD settings
   lcd.begin(16, 2);             // LCD initialization
   lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("-    :    :    -");
+  lcd.setCursor(0, 1);
+  lcd.print("-    :    :    -");
 
   pinMode(logo_sw_pin, INPUT);  // set LOGO switch pin as input pin
 
@@ -83,91 +87,100 @@ ISR(TIMER2_OVF_vect)
       else lcd.print("off");*/
 
     ADCvalue = analogRead(ADCpin);              // store ADC value
-//    delay(100);
-    for ( int i = 0; i<=5; i++)
+    //    delay(100);
+    for ( int i = 0; i <= 5; i++)
     {
       leds[i] = CRGB ( 0, 0, 0);
-      FastLED.show();  
+      FastLED.show();
     }
 
     // no button pressed
     if (ADCvalue >= 900)
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("   no input");
+      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      //lcd.print("   no input");
     }
     //first button pressed
     else if (ADCvalue >= 0 && ADCvalue <= 30)
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print(first_band_votes);
+      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      //lcd.print(first_band_votes);
       leds[5] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
       first_band_votes++;
+      display_update();
     }
     //second button pressed
     else if (ADCvalue >= 70 && ADCvalue <= 120)
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print(second_band_votes);
+      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      //lcd.print(second_band_votes);
       leds[4] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
       second_band_votes++;
+      display_update();
     }
     //third button pressed
     else if (ADCvalue >= 200 && ADCvalue <= 270)
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print(third_band_votes);
+      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      //lcd.print(third_band_votes);
       leds[3] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
       third_band_votes++;
+      display_update();
     }
     //fourth button pressed
     else if (ADCvalue >= 420 && ADCvalue <= 470)
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print(fourth_band_votes);
+      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      //lcd.print(fourth_band_votes);
       leds[2] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
       fourth_band_votes++;
+      display_update();
     }
     //fifth button pressed
     else if (ADCvalue >= 580 && ADCvalue <= 630)
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print(fifth_band_votes);
+      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      //lcd.print(fifth_band_votes);
       leds[1] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
       fifth_band_votes++;
+      display_update();
     }
     //sixth button pressed
     else if (ADCvalue >= 690 && ADCvalue <= 750)
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print(sixth_band_votes);
+      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      //lcd.print(sixth_band_votes);
       leds[0] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
       sixth_band_votes++;
+      display_update();
     }
     // can't recognize with button was pressed
     else
     {
-      lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("ERROR   ");
+      for ( int i = 0; i <= 5; i++)
+      {
+        leds[i] = CRGB ( 255, 0, 0);
+        FastLED.show();
+      }
       btn_pressed = 1;
     }
-  } 
+  }
   // sets how often will ADC tries to recognize pressed button
   else if (number_of_overflows == 2 && btn_pressed == 0) number_of_overflows = 0;
-  // sets how long will ADC stop looking for button pressed after one is pressed   
-  else if (number_of_overflows == 100 && btn_pressed == 1)                          
+  // sets how long will ADC stop looking for button pressed after one is pressed
+  else if (number_of_overflows == 100 && btn_pressed == 1)
   {
     number_of_overflows = 0;
     btn_pressed = 0;
@@ -199,5 +212,33 @@ ISR(TIMER2_OVF_vect)
   //    i++;
   //
   //  }
+
+}
+/* Custom functions --------------------------------------------------*/
+void display_update() {
+  /*
+        //lcd.setCursor(postion, line);
+        lcd.setCursor(0, 0);
+        lcd.print("-1111:2222:3333-");
+        lcd.setCursor(0, 1);
+        lcd.print("-4444:5555:6666-");
+  */
+
+  lcd.setCursor(1, 0);
+  lcd.print(first_band_votes);
+  lcd.setCursor(6, 0);
+  lcd.print(second_band_votes);
+  lcd.setCursor(11, 0);
+  lcd.print(third_band_votes);
+  lcd.setCursor(1, 1);
+  lcd.print(fourth_band_votes);
+  lcd.setCursor(6, 1);
+  lcd.print(fifth_band_votes);
+  lcd.setCursor(11, 1);
+  lcd.print(sixth_band_votes);
+
+
+
+
 
 }

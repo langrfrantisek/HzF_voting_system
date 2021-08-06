@@ -28,12 +28,12 @@ const int logo_sw_pin = 2;  // input pin for LOGO switch
 bool logo_sw_value = 0;     // variable to store LOGO switch state
 
 // variable to store band votes
-uint8_t first_band_votes = 0;
-uint8_t second_band_votes = 0;
-uint8_t third_band_votes = 0;
-uint8_t fourth_band_votes = 0;
-uint8_t fifth_band_votes = 0;
-uint8_t sixth_band_votes = 0;
+int first_band_votes = 0;
+int second_band_votes = 0;
+int third_band_votes = 0;
+int fourth_band_votes = 0;
+int fifth_band_votes = 0;
+int sixth_band_votes = 0;
 
 /************************************************************************************************/
 void setup() {
@@ -185,34 +185,6 @@ ISR(TIMER2_OVF_vect)
     number_of_overflows = 0;
     btn_pressed = 0;
   }
-
-  //  if (number_of_overflows == 5)
-  //  {
-  //    leds[0] = CRGB ( 0, 255, 0);
-  //    FastLED.show();
-  //
-  //    File soubor = SD.open("testXY.txt", FILE_WRITE);
-  //    if (soubor)
-  //    {
-  //      Serial.println(i);
-  //      soubor.println(i);
-  //      soubor.close();
-  //
-  //      lcd.setCursor(0, 0);
-  //      lcd.print("SD:");
-  //      lcd.setCursor(4, 0);
-  //      lcd.print(i);
-  //
-  //      delay(100);
-  //
-  //    } else {
-  //      lcd.setCursor(4, 0);
-  //      lcd.print("SDerror");
-  //    }
-  //    i++;
-  //
-  //  }
-
 }
 /* Custom functions --------------------------------------------------*/
 void display_update() {
@@ -237,8 +209,37 @@ void display_update() {
   lcd.setCursor(11, 1);
   lcd.print(sixth_band_votes);
 
+  sd_update();
+}
 
+void sd_update() {
 
+  File soubor = SD.open("hlasy.txt", FILE_WRITE); //_ can not be in file name
+  if (soubor)
+  {
+    soubor.print(first_band_votes);
+    soubor.print(":");
+    soubor.print(second_band_votes);
+    soubor.print(":");
+    soubor.print(third_band_votes);
+    soubor.print(":");
+    soubor.print(fourth_band_votes);
+    soubor.print(":");
+    soubor.print(fifth_band_votes);
+    soubor.print(":");
+    soubor.println(sixth_band_votes);
+    soubor.close();
+    delay(100);
 
+  } else {
+    lcd.setCursor(0, 0);
+    lcd.print("SDerror");
+
+    for ( int i = 0; i <= 5; i++)
+    {
+      leds[i] = CRGB ( 255, 0, 0);
+      FastLED.show();
+    }
+  }
 
 }

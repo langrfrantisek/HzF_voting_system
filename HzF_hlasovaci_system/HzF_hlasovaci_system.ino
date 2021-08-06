@@ -73,7 +73,7 @@ ISR(TIMER2_OVF_vect)
   static uint8_t number_of_overflows = 0;
   number_of_overflows++;
 
-  static bool btn_pressed = 0;
+  static bool btn_pressed = 0;  // variable storing if button was pressed
 
   if (number_of_overflows == 1)
   {
@@ -89,61 +89,74 @@ ISR(TIMER2_OVF_vect)
       leds[i] = CRGB ( 0, 0, 0);
       FastLED.show();  
     }
-    
 
+    // no button pressed
     if (ADCvalue >= 900)
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("no input");
+      lcd.print("   no input");
     }
+    //first button pressed
     else if (ADCvalue >= 0 && ADCvalue <= 30)
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("BTN: 1  ");
+      lcd.print(first_band_votes);
       leds[5] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
+      first_band_votes++;
     }
+    //second button pressed
     else if (ADCvalue >= 70 && ADCvalue <= 120)
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("BTN: 2  ");
+      lcd.print(second_band_votes);
       leds[4] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
+      second_band_votes++;
     }
+    //third button pressed
     else if (ADCvalue >= 200 && ADCvalue <= 270)
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("BTN: 3  ");
+      lcd.print(third_band_votes);
       leds[3] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
+      third_band_votes++;
     }
+    //fourth button pressed
     else if (ADCvalue >= 420 && ADCvalue <= 470)
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("BTN: 4  ");
+      lcd.print(fourth_band_votes);
       leds[2] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
+      fourth_band_votes++;
     }
+    //fifth button pressed
     else if (ADCvalue >= 580 && ADCvalue <= 630)
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("BTN: 5  ");
+      lcd.print(fifth_band_votes);
       leds[1] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
+      fifth_band_votes++;
     }
+    //sixth button pressed
     else if (ADCvalue >= 690 && ADCvalue <= 750)
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      lcd.print("BTN: 6  ");
+      lcd.print(sixth_band_votes);
       leds[0] = CRGB ( 0, 255, 0);
       FastLED.show();
       btn_pressed = 1;
+      sixth_band_votes++;
     }
+    // can't recognize with button was pressed
     else
     {
       lcd.setCursor(0, 1);                        // set cursor on first position and second line
@@ -151,8 +164,10 @@ ISR(TIMER2_OVF_vect)
       btn_pressed = 1;
     }
   } 
+  // sets how often will ADC tries to recognize pressed button
   else if (number_of_overflows == 2 && btn_pressed == 0) number_of_overflows = 0;
-  else if (number_of_overflows == 100 && btn_pressed == 1) 
+  // sets how long will ADC stop looking for button pressed after one is pressed   
+  else if (number_of_overflows == 100 && btn_pressed == 1)                          
   {
     number_of_overflows = 0;
     btn_pressed = 0;

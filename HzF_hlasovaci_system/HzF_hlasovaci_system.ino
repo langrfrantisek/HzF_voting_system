@@ -69,51 +69,84 @@ ISR(TIMER2_OVF_vect)
 
   if (number_of_overflows == 1)
   {
-    leds[0] = CRGB ( 255, 0, 0);
-    FastLED.show();
-
-    logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
-    lcd.setCursor(0, 0);                        // set cursor on first position and first line
-    if (logo_sw_value == 0) lcd.print("on ");
-    else lcd.print("off");
+    /*logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
+      lcd.setCursor(0, 0);                        // set cursor on first position and first line
+      if (logo_sw_value == 0) lcd.print("on ");
+      else lcd.print("off");*/
 
     ADCvalue = analogRead(ADCpin);              // store ADC value
-    lcd.setCursor(0, 1);                        // set cursor on first position and second line
-    if (ADCvalue >= 1020) lcd.print("     ");
-    else lcd.print(ADCvalue);
-  }
-  else if (number_of_overflows % 5 == 0)
-  {
-    static uint8_t intensity = 0;
-    leds[1] = CRGB ( 0, 0, intensity);
-    FastLED.show();
-    intensity += 10;
-  }
-  if (number_of_overflows == 100)
-  {
+    delay(100);
+
     leds[0] = CRGB ( 0, 255, 0);
     FastLED.show();
 
-    File soubor = SD.open("testXY.txt", FILE_WRITE);
-    if (soubor)
+    if (ADCvalue >= 900)
     {
-      Serial.println(i);
-      soubor.println(i);
-      soubor.close();
-
-      lcd.setCursor(0, 0);
-      lcd.print("SD:");
-      lcd.setCursor(4, 0);
-      lcd.print(i);
-
-      delay(100);
-
-    } else {
-      lcd.setCursor(4, 0);
-      lcd.print("SDerror");
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("no input");
     }
-    i++;
+    else if (ADCvalue >= 0 && ADCvalue <= 30)
+    {
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("BTN: 1  ");
+    }
+    else if (ADCvalue >= 70 && ADCvalue <= 120)
+    {
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("BTN: 2  ");
+    }
+    else if (ADCvalue >= 200 && ADCvalue <= 270)
+    {
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("BTN: 3  ");
+    }
+    else if (ADCvalue >= 420 && ADCvalue <= 470)
+    {
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("BTN: 4  ");
+    }
+    else if (ADCvalue >= 580 && ADCvalue <= 630)
+    {
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("BTN: 5  ");
+    }
+    else if (ADCvalue >= 690 && ADCvalue <= 750)
+    {
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("BTN: 6  ");
+    }
+    else
+    {
+      lcd.setCursor(0, 1);                        // set cursor on first position and second line
+      lcd.print("ERROR   ");
+    }
+  } else if (number_of_overflows == 10) number_of_overflows = 0;
 
-  } else if (number_of_overflows == 200) number_of_overflows = 0;
+  //  if (number_of_overflows == 5)
+  //  {
+  //    leds[0] = CRGB ( 0, 255, 0);
+  //    FastLED.show();
+  //
+  //    File soubor = SD.open("testXY.txt", FILE_WRITE);
+  //    if (soubor)
+  //    {
+  //      Serial.println(i);
+  //      soubor.println(i);
+  //      soubor.close();
+  //
+  //      lcd.setCursor(0, 0);
+  //      lcd.print("SD:");
+  //      lcd.setCursor(4, 0);
+  //      lcd.print(i);
+  //
+  //      delay(100);
+  //
+  //    } else {
+  //      lcd.setCursor(4, 0);
+  //      lcd.print("SDerror");
+  //    }
+  //    i++;
+  //
+  //  }
 
 }

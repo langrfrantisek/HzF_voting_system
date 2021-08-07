@@ -234,20 +234,29 @@ void button_search() {
 
 void logo(bool sw)
 {
-  static bool sw_before = 1;
+  static bool change = 0;
   static uint8_t led_num = 6;
 
-  if (sw == 0 && led_num <= 17)
+  if (sw == 0)  // if logo switch is on
   {
-    leds[led_num] = CRGB ( 0, 0, 255);
-    FastLED.show();
+    if (led_num <= 17 && change == 0)
+    {
+      leds[led_num] = CRGB ( 0, 0, 255);
+      FastLED.show();
+    }
+    else if (led_num <= 17 && change == 1)
+    {
+      leds[led_num] = CRGB ( 255, 0, 0);
+      FastLED.show();
+    }
   }
-  else
+
+  if (led_num < 17) led_num++;
+  else if (led_num == 17) 
   {
-    leds[led_num] = CRGB ( 255, 0, 0);
-    FastLED.show();
+    change = !change;
+    led_num++;
   }
-  if (led_num <= 17) led_num++;
   else led_num = 6;
-  
+
 }

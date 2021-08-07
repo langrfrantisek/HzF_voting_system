@@ -235,26 +235,19 @@ void button_search() {
 void logo(bool sw)
 {
   static bool sw_before = 1;
-  static uint8_t led_num;
-  if (sw != sw_before)
-  {
-    sw_before = sw;
+  static uint8_t led_num = 6;
 
-    if (sw == 0)
-    {
-      //for (led_num = 6; led_num <= 15; led_num++)
-      //{
-        leds[6] = CRGB ( 0, 0, 255);
-        FastLED.show();
-      //}
-    }
-    else
-    {
-      //for (led_num = 6; led_num <= 15; led_num++)
-     // {
-        leds[6] = CRGB ( 255, 0, 0);
-        FastLED.show();
-      //}
-    }
+  if (sw == 0 && led_num <= 17)
+  {
+    leds[led_num] = CRGB ( 0, 0, 255);
+    FastLED.show();
   }
+  else
+  {
+    leds[led_num] = CRGB ( 255, 0, 0);
+    FastLED.show();
+  }
+  if (led_num <= 17) led_num++;
+  else led_num = 6;
+  
 }

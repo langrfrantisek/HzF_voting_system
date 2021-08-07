@@ -82,17 +82,7 @@ ISR(TIMER2_OVF_vect)
   {
     logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
     button_search();
-
-    if (logo_sw_value == 0)                     // if LOGO switch is on
-    {
-      leds[6] = CRGB ( 0, 0, 255);
-      FastLED.show();
-    }
-    else if (logo_sw_value == 1)
-    {
-      leds[6] = CRGB ( 0, 0, 0);
-      FastLED.show();
-    }
+    logo(logo_sw_value);
   }
   // sets how often will ADC tries to recognize pressed button
   else if (number_of_overflows == 2 && btn_pressed == 0) number_of_overflows = 0;
@@ -239,5 +229,32 @@ void button_search() {
       FastLED.show();
     }
     btn_pressed = 1;
+  }
+}
+
+void logo(bool sw)
+{
+  static bool sw_before = 1;
+  static uint8_t led_num;
+  if (sw != sw_before)
+  {
+    sw_before = sw;
+
+    if (sw == 0)
+    {
+      //for (led_num = 6; led_num <= 15; led_num++)
+      //{
+        leds[6] = CRGB ( 0, 0, 255);
+        FastLED.show();
+      //}
+    }
+    else
+    {
+      //for (led_num = 6; led_num <= 15; led_num++)
+     // {
+        leds[6] = CRGB ( 255, 0, 0);
+        FastLED.show();
+      //}
+    }
   }
 }

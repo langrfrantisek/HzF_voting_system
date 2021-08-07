@@ -23,6 +23,7 @@ const int chipSelect = 4;   // pin where SD card module CS pin is connected
 
 const int ADCpin = A7;      // input pin for button - resistor ladder
 int ADCvalue = 0;           // variable to store the value coming from button - resistor ladder
+bool btn_pressed = 0;       // variable storing if button was pressed
 
 const int logo_sw_pin = 2;  // input pin for LOGO switch
 bool logo_sw_value = 0;     // variable to store LOGO switch state
@@ -77,104 +78,20 @@ ISR(TIMER2_OVF_vect)
   static uint8_t number_of_overflows = 0;
   number_of_overflows++;
 
-  static bool btn_pressed = 0;  // variable storing if button was pressed
-
   if (number_of_overflows == 1)
   {
-    /*logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
-      lcd.setCursor(0, 0);                        // set cursor on first position and first line
-      if (logo_sw_value == 0) lcd.print("on ");
-      else lcd.print("off");*/
+    logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
+    button_search();
 
-    ADCvalue = analogRead(ADCpin);              // store ADC value
-    //    delay(100);
-    for ( int i = 0; i <= 5; i++)
+    if (logo_sw_value == 0)                     // if LOGO switch is on
     {
-      leds[i] = CRGB ( 0, 0, 0);
+      leds[6] = CRGB ( 0, 0, 255);
       FastLED.show();
     }
-
-    // no button pressed
-    if (ADCvalue >= 900)
+    else if (logo_sw_value == 1)
     {
-      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      //lcd.print("   no input");
-    }
-    //first button pressed
-    else if (ADCvalue >= 0 && ADCvalue <= 30)
-    {
-      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      //lcd.print(first_band_votes);
-      leds[5] = CRGB ( 0, 255, 0);
+      leds[6] = CRGB ( 0, 0, 0);
       FastLED.show();
-      btn_pressed = 1;
-      first_band_votes++;
-      display_update();
-    }
-    //second button pressed
-    else if (ADCvalue >= 70 && ADCvalue <= 120)
-    {
-      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      //lcd.print(second_band_votes);
-      leds[4] = CRGB ( 0, 255, 0);
-      FastLED.show();
-      btn_pressed = 1;
-      second_band_votes++;
-      display_update();
-    }
-    //third button pressed
-    else if (ADCvalue >= 200 && ADCvalue <= 270)
-    {
-      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      //lcd.print(third_band_votes);
-      leds[3] = CRGB ( 0, 255, 0);
-      FastLED.show();
-      btn_pressed = 1;
-      third_band_votes++;
-      display_update();
-    }
-    //fourth button pressed
-    else if (ADCvalue >= 420 && ADCvalue <= 470)
-    {
-      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      //lcd.print(fourth_band_votes);
-      leds[2] = CRGB ( 0, 255, 0);
-      FastLED.show();
-      btn_pressed = 1;
-      fourth_band_votes++;
-      display_update();
-    }
-    //fifth button pressed
-    else if (ADCvalue >= 580 && ADCvalue <= 630)
-    {
-      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      //lcd.print(fifth_band_votes);
-      leds[1] = CRGB ( 0, 255, 0);
-      FastLED.show();
-      btn_pressed = 1;
-      fifth_band_votes++;
-      display_update();
-    }
-    //sixth button pressed
-    else if (ADCvalue >= 690 && ADCvalue <= 750)
-    {
-      //lcd.setCursor(0, 1);                        // set cursor on first position and second line
-      //lcd.print(sixth_band_votes);
-      leds[0] = CRGB ( 0, 255, 0);
-      FastLED.show();
-      btn_pressed = 1;
-      sixth_band_votes++;
-      display_update();
-    }
-    // can't recognize with button was pressed
-    else
-    {
-      for ( int i = 0; i <= 5; i++)
-      {
-        leds[i] = CRGB ( 255, 0, 0);
-        FastLED.show();
-      }
-      btn_pressed = 1;
     }
   }
   // sets how often will ADC tries to recognize pressed button
@@ -229,7 +146,6 @@ void sd_update() {
     soubor.print(":");
     soubor.println(sixth_band_votes);
     soubor.close();
-    delay(100);
 
   } else {
     lcd.setCursor(0, 0);
@@ -242,4 +158,86 @@ void sd_update() {
     }
   }
 
+}
+
+void button_search() {
+
+  ADCvalue = analogRead(ADCpin);              // store ADC value
+  // needed some delay ind this line for cycle below works fine
+  for ( int i = 0; i <= 5; i++)
+  {
+    leds[i] = CRGB ( 0, 0, 0);
+    FastLED.show();
+  }
+
+  // no button pressed
+  if (ADCvalue >= 900)
+  {
+    //lcd.setCursor(0, 1);      // set cursor on first position and second line
+    //lcd.print("   no input");
+  }
+  //first button pressed
+  else if (ADCvalue >= 0 && ADCvalue <= 30)
+  {
+    leds[5] = CRGB ( 0, 255, 0);
+    FastLED.show();
+    btn_pressed = 1;
+    first_band_votes++;
+    display_update();
+  }
+  //second button pressed
+  else if (ADCvalue >= 70 && ADCvalue <= 120)
+  {
+    leds[4] = CRGB ( 0, 255, 0);
+    FastLED.show();
+    btn_pressed = 1;
+    second_band_votes++;
+    display_update();
+  }
+  //third button pressed
+  else if (ADCvalue >= 200 && ADCvalue <= 270)
+  {
+    leds[3] = CRGB ( 0, 255, 0);
+    FastLED.show();
+    btn_pressed = 1;
+    third_band_votes++;
+    display_update();
+  }
+  //fourth button pressed
+  else if (ADCvalue >= 420 && ADCvalue <= 470)
+  {
+    leds[2] = CRGB ( 0, 255, 0);
+    FastLED.show();
+    btn_pressed = 1;
+    fourth_band_votes++;
+    display_update();
+  }
+  //fifth button pressed
+  else if (ADCvalue >= 580 && ADCvalue <= 630)
+  {
+    leds[1] = CRGB ( 0, 255, 0);
+    FastLED.show();
+    btn_pressed = 1;
+    fifth_band_votes++;
+    display_update();
+  }
+  //sixth button pressed
+  else if (ADCvalue >= 690 && ADCvalue <= 750)
+  {
+    leds[0] = CRGB ( 0, 255, 0);
+    FastLED.show();
+    btn_pressed = 1;
+    sixth_band_votes++;
+    display_update();
+  }
+  // can't recognize with button was pressed
+  else
+  {
+    for ( int i = 0; i <= 5; i++)
+    {
+      leds[i] = CRGB ( 255, 0, 0);
+      FastLED.show();
+    }
+    btn_pressed = 1;
+  }
 }

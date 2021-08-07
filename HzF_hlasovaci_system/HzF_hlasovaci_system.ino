@@ -250,11 +250,16 @@ void logo(bool sw)
       FastLED.show();
     }
   }
+  else
+  {
+    leds[led_num] = CRGB ( 0, 0, 0);
+    FastLED.show();
+  }
 
   if (led_num < 17) led_num++;
-  else if (led_num == 17) 
+  else if (led_num == 17)
   {
-    change = !change;
+    change = !change; //invert
     led_num++;
   }
   else led_num = 6;

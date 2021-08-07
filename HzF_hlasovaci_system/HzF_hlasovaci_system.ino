@@ -77,12 +77,14 @@ ISR(TIMER2_OVF_vect)
 
   static uint8_t number_of_overflows = 0;
   number_of_overflows++;
-
+  
+  if (number_of_overflows % 2 == 0) logo(logo_sw_value);
+  
   if (number_of_overflows == 1)
   {
     logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
     button_search();
-    logo(logo_sw_value);
+    
   }
   // sets how often will ADC tries to recognize pressed button
   else if (number_of_overflows == 2 && btn_pressed == 0) number_of_overflows = 0;
@@ -256,12 +258,11 @@ void logo(bool sw)
     FastLED.show();
   }
 
-  if (led_num < 17) led_num++;
+  if (led_num < 17) led_num++;  // increase led position
   else if (led_num == 17)
   {
     change = !change; //invert
     led_num++;
   }
   else led_num = 6;
-
 }

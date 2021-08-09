@@ -16,6 +16,12 @@
 #define LED_PIN     7
 #define NUM_LEDS    18
 CRGB leds[NUM_LEDS];
+uint8_t const columns = 4;
+uint8_t colors[3][columns] = {
+  {255,   0,   0,   255},
+  {  0, 255,   0,   255},
+  {  0,   0, 255,     0}
+};
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
@@ -77,14 +83,15 @@ ISR(TIMER2_OVF_vect)
 
   static uint8_t number_of_overflows = 0;
   number_of_overflows++;
-  
+
+  // if LOGO switch is on, every two ISR make logo animation change
   if (number_of_overflows % 2 == 0) logo(logo_sw_value);
-  
+
   if (number_of_overflows == 1)
   {
     logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
     button_search();
-    
+
   }
   // sets how often will ADC tries to recognize pressed button
   else if (number_of_overflows == 2 && btn_pressed == 0) number_of_overflows = 0;
@@ -222,7 +229,7 @@ void button_search() {
     sixth_band_votes++;
     display_update();
   }
-  // can't recognize with button was pressed
+  // can't recognize which button was pressed
   else
   {
     for ( int i = 0; i <= 5; i++)
@@ -237,32 +244,28 @@ void button_search() {
 void logo(bool sw)
 {
   static bool change = 0;
+  static uint8_t animation_step = 0;
   static uint8_t led_num = 6;
-
-  if (sw == 0)  // if logo switch is on
+  static uint8_t slow_down = 0;
+  if (slow_down % 5 == 0)
   {
-    if (led_num <= 17 && change == 0)
+    if (sw == 0)  // if logo switch is on
     {
-      leds[led_num] = CRGB ( 0, 0, 255);
+      leds[17] = CRGB ( colors[0][animation_step], colors[1][animation_step], colors[2][animation_step]);
       FastLED.show();
     }
-    else if (led_num <= 17 && change == 1)
+    else
     {
-      leds[led_num] = CRGB ( 255, 0, 0);
+      leds[17] = CRGB ( 0, 0, 0);
       FastLED.show();
     }
-  }
-  else
-  {
-    leds[led_num] = CRGB ( 0, 0, 0);
-    FastLED.show();
-  }
 
-  if (led_num < 17) led_num++;  // increase led position
-  else if (led_num == 17)
-  {
-    change = !change; //invert
-    led_num++;
+    if (led_num < 16) led_num++;  // increase led position
+    else if (led_num == 16) led_num = 6;
+
+    //}
+    if (animation_step < columns-1) animation_step++;
+    else animation_step = 0;
   }
-  else led_num = 6;
+  slow_down++;
 }

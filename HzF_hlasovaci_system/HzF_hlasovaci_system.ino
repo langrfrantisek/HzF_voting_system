@@ -18,9 +18,9 @@
 CRGB leds[NUM_LEDS];
 uint8_t const columns = 11;
 uint8_t colors[3][columns] = {
-  {   0,   0,   0,   0, 255, 255, 255, 255, 255, 255, 255},
+  {   0,   0,   0,   0,   0, 255, 255, 255, 255, 255, 255},
   {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255},
-  { 255, 255, 255, 255, 255,   0,   0,   0,   0, 255, 255}
+  { 255, 255, 255, 255, 255,   0,   0,   0,   0,   0, 255}
 };
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
@@ -51,9 +51,9 @@ void setup() {
   lcd.begin(16, 2);             // LCD initialization
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("-    :    :    -");
+  lcd.print("    ^^    ^^    ");
   lcd.setCursor(0, 1);
-  lcd.print("-    :    :    -");
+  lcd.print("    ^^    ^^    ");
 
   pinMode(logo_sw_pin, INPUT);  // set LOGO switch pin as input pin
 
@@ -106,22 +106,22 @@ void display_update() {
   /*
         //lcd.setCursor(postion, line);
         lcd.setCursor(0, 0);
-        lcd.print("-1111:2222:3333-");
+        lcd.print("1111^^2222^^3333");
         lcd.setCursor(0, 1);
-        lcd.print("-4444:5555:6666-");
+        lcd.print("4444^^5555^^6666");
   */
 
-  lcd.setCursor(1, 0);
+  lcd.setCursor(0, 0);
   lcd.print(first_band_votes);
   lcd.setCursor(6, 0);
   lcd.print(second_band_votes);
-  lcd.setCursor(11, 0);
+  lcd.setCursor(12, 0);
   lcd.print(third_band_votes);
-  lcd.setCursor(1, 1);
+  lcd.setCursor(0, 1);
   lcd.print(fourth_band_votes);
   lcd.setCursor(6, 1);
   lcd.print(fifth_band_votes);
-  lcd.setCursor(11, 1);
+  lcd.setCursor(12, 1);
   lcd.print(sixth_band_votes);
 
   sd_update();
@@ -238,8 +238,8 @@ void logo(bool sw)
 {
   static uint8_t led_num = 6;
   static uint8_t slow_down = 0;
-  //if (slow_down % 5 == 0)
-  //{
+  if (slow_down % 2 == 0)
+  {
     if (sw == 0)  // if logo switch is on
     {
       for (int i = 0; i <= 9; i++) // cycle only 10 times, led num remember 16 for next run and that makes LED movement
@@ -249,7 +249,7 @@ void logo(bool sw)
         else if (led_num == 16) led_num = 6;
       }
 
-      leds[17] = CRGB ( colors[0][10], colors[1][10], colors[2][10]); //center LED color (last in array)
+      leds[17] = CRGB ( colors[0][columns-1], colors[1][columns-1], colors[2][columns-1]); //center LED color (last in array)
       FastLED.show();
     }
     else  // turn of all logo LEDs
@@ -257,6 +257,6 @@ void logo(bool sw)
       for (int i = 6; i <= 17; i++) leds[i] = CRGB ( 0, 0, 0);
       FastLED.show();
     }
-  //}
+  }
   slow_down++;
 }

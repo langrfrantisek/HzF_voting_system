@@ -18,9 +18,9 @@
 CRGB leds[NUM_LEDS];
 uint8_t const columns = 11;
 uint8_t colors[3][columns] = {
-  { 255,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255},
+  {   0,   0,   0,   0, 255, 255, 255, 255, 255, 255, 255},
   {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255},
-  {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255}
+  { 255, 255, 255, 255, 255,   0,   0,   0,   0, 255, 255}
 };
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
@@ -91,7 +91,6 @@ ISR(TIMER2_OVF_vect)
   {
     logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
     button_search();
-
   }
   // sets how often will ADC tries to recognize pressed button
   else if (number_of_overflows == 2 && btn_pressed == 0) number_of_overflows = 0;
@@ -163,11 +162,8 @@ void button_search() {
 
   ADCvalue = analogRead(ADCpin);              // store ADC value
   // needed some delay ind this line for cycle below works fine
-  for ( int i = 0; i <= 5; i++)
-  {
-    leds[i] = CRGB ( 0, 0, 0);
-    FastLED.show();
-  }
+  for ( int i = 0; i <= 5; i++) leds[i] = CRGB ( 0, 0, 0);
+  FastLED.show();
 
   // no button pressed
   if (ADCvalue >= 900)
@@ -232,64 +228,35 @@ void button_search() {
   // can't recognize which button was pressed
   else
   {
-    for ( int i = 0; i <= 5; i++)
-    {
-      leds[i] = CRGB ( 255, 0, 0);
-      FastLED.show();
-    }
+    for ( int i = 0; i <= 5; i++) leds[i] = CRGB ( 255, 0, 0);
+    FastLED.show();
     btn_pressed = 1;
   }
 }
 
 void logo(bool sw)
 {
-  static uint8_t animation_step = 0;
   static uint8_t led_num = 6;
   static uint8_t slow_down = 0;
-  if (slow_down % 10 == 0)
-  {
+  //if (slow_down % 5 == 0)
+  //{
     if (sw == 0)  // if logo switch is on
     {
-      for (led_num = 6; led_num <= 16; led_num++)
+      for (int i = 0; i <= 9; i++) // cycle only 10 times, led num remember 16 for next run and that makes LED movement
       {
-
-        leds[led_num] = CRGB ( colors[0][animation_step], colors[1][animation_step], colors[2][animation_step]);
-        FastLED.show();
-
-
-        if (animation_step < columns - 1) animation_step++;
-        else animation_step = 0;
+        leds[led_num] = CRGB ( colors[0][i], colors[1][i], colors[2][i]);
+        if (led_num < 16) led_num++;  // increase led position
+        else if (led_num == 16) led_num = 6;
       }
-    }
-    else
-    {
-      leds[led_num] = CRGB ( 0, 0, 0);
+
+      leds[17] = CRGB ( colors[0][10], colors[1][10], colors[2][10]); //center LED color (last in array)
       FastLED.show();
     }
-    change();
-  }
+    else  // turn of all logo LEDs
+    {
+      for (int i = 6; i <= 17; i++) leds[i] = CRGB ( 0, 0, 0);
+      FastLED.show();
+    }
+  //}
   slow_down++;
-}
-
-void change()
-{
-  static uint8_t tran[3][1] = {
-  {   0},
-  {   0},
-  {   0}
-};
-  tran[0][0] = colors[0][0];
-  tran[1][0] = colors[1][0];
-  tran[2][0] = colors[2][0];
-
-  for (int i = 0; i < columns - 1; i++)
-  {
-    colors[0][i] = colors[0][i + 1];
-    colors[1][i] = colors[1][i + 1];
-    colors[2][i] = colors[2][i + 1];
-  }
-  colors[0][columns - 1] = tran[0][0];
-  colors[1][columns - 1] = tran[1][0];
-  colors[2][columns - 1] = tran[2][0];
-  
 }

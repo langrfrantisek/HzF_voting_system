@@ -16,11 +16,11 @@
 #define LED_PIN     7
 #define NUM_LEDS    18
 CRGB leds[NUM_LEDS];
-uint8_t const columns = 4;
+uint8_t const columns = 11;
 uint8_t colors[3][columns] = {
-  {255,   0,   0,   255},
-  {  0, 255,   0,   255},
-  {  0,   0, 255,     0}
+  { 255,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255},
+  {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255},
+  {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255}
 };
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
@@ -243,29 +243,53 @@ void button_search() {
 
 void logo(bool sw)
 {
-  static bool change = 0;
   static uint8_t animation_step = 0;
   static uint8_t led_num = 6;
   static uint8_t slow_down = 0;
-  if (slow_down % 5 == 0)
+  if (slow_down % 10 == 0)
   {
     if (sw == 0)  // if logo switch is on
     {
-      leds[17] = CRGB ( colors[0][animation_step], colors[1][animation_step], colors[2][animation_step]);
-      FastLED.show();
+      for (led_num = 6; led_num <= 16; led_num++)
+      {
+
+        leds[led_num] = CRGB ( colors[0][animation_step], colors[1][animation_step], colors[2][animation_step]);
+        FastLED.show();
+
+
+        if (animation_step < columns - 1) animation_step++;
+        else animation_step = 0;
+      }
     }
     else
     {
-      leds[17] = CRGB ( 0, 0, 0);
+      leds[led_num] = CRGB ( 0, 0, 0);
       FastLED.show();
     }
-
-    if (led_num < 16) led_num++;  // increase led position
-    else if (led_num == 16) led_num = 6;
-
-    //}
-    if (animation_step < columns-1) animation_step++;
-    else animation_step = 0;
+    change();
   }
   slow_down++;
+}
+
+void change()
+{
+  static uint8_t tran[3][1] = {
+  {   0},
+  {   0},
+  {   0}
+};
+  tran[0][0] = colors[0][0];
+  tran[1][0] = colors[1][0];
+  tran[2][0] = colors[2][0];
+
+  for (int i = 0; i < columns - 1; i++)
+  {
+    colors[0][i] = colors[0][i + 1];
+    colors[1][i] = colors[1][i + 1];
+    colors[2][i] = colors[2][i + 1];
+  }
+  colors[0][columns - 1] = tran[0][0];
+  colors[1][columns - 1] = tran[1][0];
+  colors[2][columns - 1] = tran[2][0];
+  
 }

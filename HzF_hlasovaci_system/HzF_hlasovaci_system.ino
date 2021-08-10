@@ -16,11 +16,11 @@
 #define LED_PIN     7
 #define NUM_LEDS    18
 CRGB leds[NUM_LEDS];
-uint8_t const columns = 4;
+uint8_t const columns = 11;
 uint8_t colors[3][columns] = {
-  {255,   0,   0,   255},
-  {  0, 255,   0,   255},
-  {  0,   0, 255,     0}
+  { 255, 255, 255, 255, 255, 255,   0,   0,   0,   0,   0},
+  {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0},
+  {   0,   0,   0,   0,   0,   0, 255, 255, 255, 255, 255}
 };
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
@@ -251,20 +251,27 @@ void logo(bool sw)
   {
     if (sw == 0)  // if logo switch is on
     {
-      leds[17] = CRGB ( colors[0][animation_step], colors[1][animation_step], colors[2][animation_step]);
+      for (int i = 0; i <= 10; i++)
+      {
+        leds[led_num] = CRGB ( colors[0][i], colors[1][i], colors[2][i]);
+        if (led_num < 17) led_num++;  // increase led position
+        else if (led_num == 17) led_num = 6;
+      }
+
+
       FastLED.show();
     }
     else
     {
-      leds[17] = CRGB ( 0, 0, 0);
+      for (int i = 6; i <= 17; i++) leds[i] = CRGB ( 0, 0, 0);
       FastLED.show();
+
     }
 
-    if (led_num < 16) led_num++;  // increase led position
-    else if (led_num == 16) led_num = 6;
+
 
     //}
-    if (animation_step < columns-1) animation_step++;
+    if (animation_step < columns - 1) animation_step++;
     else animation_step = 0;
   }
   slow_down++;

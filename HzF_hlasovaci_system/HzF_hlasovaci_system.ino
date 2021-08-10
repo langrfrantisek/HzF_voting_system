@@ -18,9 +18,9 @@
 CRGB leds[NUM_LEDS];
 uint8_t const columns = 11;
 uint8_t colors[3][columns] = {
-  { 255, 255, 255, 255, 255, 255,   0,   0,   0,   0,   0},
-  {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0},
-  {   0,   0,   0,   0,   0,   0, 255, 255, 255, 255, 255}
+  { 255, 255, 255, 255, 255,   0,   0,   0,   0,   0,   0},
+  {   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 255},
+  {   0,   0,   0,   0,   0, 255, 255, 255, 255, 255,   0}
 };
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
@@ -243,36 +243,27 @@ void button_search() {
 
 void logo(bool sw)
 {
-  static bool change = 0;
-  static uint8_t animation_step = 0;
   static uint8_t led_num = 6;
   static uint8_t slow_down = 0;
   if (slow_down % 5 == 0)
   {
     if (sw == 0)  // if logo switch is on
     {
-      for (int i = 0; i <= 10; i++)
+      for (int i = 0; i <= 9; i++) // cycle only 10 times, led num remember 16 for next run and that makes LED movement
       {
         leds[led_num] = CRGB ( colors[0][i], colors[1][i], colors[2][i]);
-        if (led_num < 17) led_num++;  // increase led position
-        else if (led_num == 17) led_num = 6;
+        if (led_num < 16) led_num++;  // increase led position
+        else if (led_num == 16) led_num = 6;
       }
-
-
+      
+      leds[17] = CRGB ( colors[0][10], colors[1][10], colors[2][10]); //center LED color (last in array)
       FastLED.show();
     }
-    else
+    else  // turn of all logo LEDs
     {
       for (int i = 6; i <= 17; i++) leds[i] = CRGB ( 0, 0, 0);
       FastLED.show();
-
     }
-
-
-
-    //}
-    if (animation_step < columns - 1) animation_step++;
-    else animation_step = 0;
   }
   slow_down++;
 }

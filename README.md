@@ -15,6 +15,7 @@ Po připojení a zapnutí zařízení je možné začít hlasovat. Stiskem tlač
 ### Seznam součástek
 * 6x [Tlačítko](https://www.gme.cz/tlacitkovy-spinac-pbs-13b-r)
 * 1x [klon Arduino Pro mini](https://www.aliexpress.com/item/2031903258.html?spm=a2g0s.9042311.0.0.27424c4dakAzYm)
+* 1x Převodník USB/TTL pro programování, [YP-05](https://www.hadex.cz/m435b-prevodnik-usbttl-modul-s-ft232rl/?gclid=CjwKCAjwmeiIBhA6EiwA-uaeFRXA4soPKs384wWb1vIK3xhRTusBXaXjJ_JUQO9WOdVvmTuzFmfkJxoCZpMQAvD_BwE) modul s FT232RL 
 * 18x LED z pásku 60/m [Adresovatelný LED pásek WS2812B](https://www.aliexpress.com/item/2036819167.html?spm=a2g0s.9042311.0.0.27424c4diLhTmF)
 * 1x [Modul čtečky microSD karet](https://www.gme.cz/modul-ctecky-micro-sd-karet)
 * 1x [microSD karta](https://www.alza.cz/verbatim-micro-sdhc-16gb-class-10-sd-adapter-d442132.htm)
@@ -53,7 +54,8 @@ V případě potřeby rozšíření o další tlačítka (například pro akci H
 ### Vývojový diagram
 
 ### Programování
-Pro přístup k programovacím pinům je potřeba odsroubovat šroubek na krytce s nápisem "328P". **Je li připojen PC přes programátor k Arduinu, nesmí být zařízení napájeno z micro USB konektoru!** Stačí vypnout hlavní vypínač. Programátor a arduino mohou poté být při testování propojeny i při zapnutí zařízení **za předpokladu, že je programátor odpojen od PC/napájení během napájení zařízení z micro USB**, kvůli rušení (adresovatelný LED pásek jinak blbne) je třeba odpojit svorku která projuje napájení programátoru a Arduino.\
+Pro přístup k programovacím pinům je potřeba odšroubovat šroubek na krytce s nápisem "328P". **Je li připojen PC přes programátor k Arduinu, nesmí být zařízení napájeno z micro USB konektoru!** Stačí vypnout hlavní vypínač. Programátor a arduino mohou poté být při testování propojeny i při zapnutí zařízení **za předpokladu, že je programátor odpojen od PC/napájení během napájení zařízení z micro USB**. Pokud je programátor připojen k Arduinu (ne k PC) i při testování nového programu je kvůli rušení třeba odpojit svorku na desce programátoru, která projuje napájení programátoru a Arduino (adresovatelný LED pásek jinak blbne).\
+Pro programování je nutné použít převodník (např. Převodník [YP-05](https://www.hadex.cz/m435b-prevodnik-usbttl-modul-s-ft232rl/?gclid=CjwKCAjwmeiIBhA6EiwA-uaeFRXA4soPKs384wWb1vIK3xhRTusBXaXjJ_JUQO9WOdVvmTuzFmfkJxoCZpMQAvD_BwE)).\
 V Arduino IDE se jedná o desku "Arduino Pro or Pro Mini, ATmega328P (5V, 16MHz)". 
 
 ## Reference

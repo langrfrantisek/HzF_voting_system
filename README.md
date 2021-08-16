@@ -14,14 +14,21 @@ Po připojení a zapnutí zařízení je možné začít hlasovat. Stiskem tlač
 
 ### Seznam součástek
 * 6x [Tlačítko](https://www.gme.cz/tlacitkovy-spinac-pbs-13b-r)
-* [klon Arduino Pro mini](https://www.aliexpress.com/item/2031903258.html?spm=a2g0s.9042311.0.0.27424c4dakAzYm)
+* 1x [klon Arduino Pro mini](https://www.aliexpress.com/item/2031903258.html?spm=a2g0s.9042311.0.0.27424c4dakAzYm)
 * 18x LED z pásku 60/m [Adresovatelný LED pásek WS2812B](https://www.aliexpress.com/item/2036819167.html?spm=a2g0s.9042311.0.0.27424c4diLhTmF)
-* [Modul čtečky microSD karet](https://www.gme.cz/modul-ctecky-micro-sd-karet)
-* [LCD display 16x2 znaků](https://www.gme.cz/modry-lcd-display-16x2-i2c)
-* [Pinout modul s microUSB konektorem](https://www.gme.cz/modul-pinout-s-micro-usb-konektorem)
-* 
-* Rezistory: 3x 10k, 1x (1k,2k,4k7,6k8)
-* Fastony
+* 1x [Modul čtečky microSD karet](https://www.gme.cz/modul-ctecky-micro-sd-karet)
+* 1x [microSD karta](https://www.alza.cz/verbatim-micro-sdhc-16gb-class-10-sd-adapter-d442132.htm)
+* 1x [LCD display 16x2 znaků](https://www.gme.cz/modry-lcd-display-16x2-i2c)
+* 1x [Pinout modul s microUSB konektorem](https://www.gme.cz/modul-pinout-s-micro-usb-konektorem)
+* 2x Univerzální DPS 5x7cm předvrtaná
+* 10x [Šroubovací svorkovnice 2pól](https://www.gme.cz/svorkovnice-sroubovaci-do-dps-ark500-2ex)
+* Konektory [JST XH 2.54](https://www.laskarduino.cz/laskakit-sada-jst-xh-konektoru-80ks/?gclid=CjwKCAjwmeiIBhA6EiwA-uaeFTCon_2C3VW73b0MITJvmmYHPBOMC0zGkSmEcFqFK19o3NaiOJ1m8xoC3CAQAvD_BwE)
+* 1x [Hlavní spínač](https://www.gme.cz/p-sw101-red)
+* 2x [Malý spínač](https://www.gme.cz/p-sm101-1r3)
+* Rezistory: 3x 10k; 1x 1k,2k,4k7,6k8
+* Filamenty: [Prusament PETG Jet Black](https://shop.prusa3d.com/cs/prusament/802-prusament-petg-jet-black-1kg.html), [Prusament PETG Clear](https://shop.prusa3d.com/cs/prusament/1216-prusament-petg-clear-1kg.html)
+* Hliníkový pásek 10mm široký, 2mm tlustý (chlazení LED pásku)
+* Neodymové magnety, fastony, dutinky, vodiče, stahovací pásky a bužírky
 * Šroubky, matičky a podložky M3x10, imbus, válcová hlava
 * Šrouby do plastu 8mm, křížový, půlkulatá hlava
 

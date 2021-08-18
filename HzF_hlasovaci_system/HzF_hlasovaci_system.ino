@@ -64,12 +64,12 @@ void setup() {
   FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
   delay(50);                  //needed
 
-  // Interrupt settings
-  cli();                        //stop interrupts for till we make the settings
-  TCCR2A = 0;                   // Reset entire TCCR1A to 0
-  TCCR2B = 0;                   // Reset entire TCCR1B to 0
+  // Interrupt settings - Timer2
+  cli();                        // stop interrupts for till we make the settings
+  TCCR2A = 0;                   // Reset entire TCCR2A to 0
+  TCCR2B = 0;                   // Reset entire TCCR2B to 0
   TCCR2B |= B00000111;          // prescaler 1024 -> 16ms
-  TIMSK2 |= (1 << TOIE2);       // overflow interrupt on Timer1 enable
+  TIMSK2 |= (1 << TOIE2);       // overflow interrupt on Timer2 enable
   sei();                        // Enable interrupts
 
 }
@@ -88,13 +88,9 @@ ISR(TIMER2_OVF_vect)
   number_of_overflows++;
 
   // if LOGO switch is on, every two ISR make logo animation change
-  if (number_of_overflows % 2 == 0) logo(logo_sw_value);
-
-  if (number_of_overflows == 1)
-  {
-    logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
-    button_search();                            // search if any band button is pressed
-  }
+  if (number_of_overflows % 2 == 0) logo();
+  // search if any band button is pressed
+  if (number_of_overflows == 1) button_search();      
   // sets how often will ADC tries to recognize pressed button
   else if (number_of_overflows == 2 && btn_pressed == 0) number_of_overflows = 0;
   // sets how long will ADC stop looking for button pressed after one is pressed
@@ -244,14 +240,15 @@ void button_search() {
   }
 }
 // make animation change - by one position shift color of all circle LEDs (called by ISR(TIMER2_OVF_vect);)
-void logo(bool sw)
+void logo()
 {
   static uint8_t led_num = 6;   // variable for adress of writed LED 
   static uint8_t slow_down = 0; // counting how many times was functon called
   // slow down animation by ignoring odd cycles
   if (slow_down % 2 == 0)
   {
-    if (sw == 0)  // if logo switch is on
+    logo_sw_value = digitalRead(logo_sw_pin);   // store LOGO switch value
+    if (logo_sw_value == 0)  // if logo switch is on
     {
       for (int i = 0; i <= 9; i++) // cycle only 10 times, led num remember 16 for next run and that makes LED movement
       {

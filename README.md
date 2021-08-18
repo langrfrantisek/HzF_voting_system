@@ -51,7 +51,10 @@ V případě potřeby rozšíření o další tlačítka (například pro akci H
 
 
 ## Software
+
 ### Vývojový diagram
+![flowchart](https://github.com/langrfrantisek/HzF_voting_system/blob/main/HzF_flowchart.png)
+*verze v PDF [zde](https://github.com/langrfrantisek/HzF_voting_system/blob/main/HzF_flowchart.pdf)*
 
 ### Programování
 Pro přístup k programovacím pinům je potřeba odšroubovat šroubek na krytce s nápisem "328P". **Je li připojen PC přes programátor k Arduinu, nesmí být zařízení napájeno z micro USB konektoru!** Stačí vypnout hlavní vypínač. Programátor a arduino mohou poté být při testování propojeny i při zapnutí zařízení **za předpokladu, že je programátor odpojen od PC/napájení během napájení zařízení z micro USB**. Pokud je programátor připojen k Arduinu (ne k PC) i při testování nového programu je kvůli rušení třeba odpojit svorku na desce programátoru, která projuje napájení programátoru a Arduino (adresovatelný LED pásek jinak blbne).\

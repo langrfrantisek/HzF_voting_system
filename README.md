@@ -55,12 +55,19 @@ V případě potřeby rozšíření o další tlačítka (například pro akci H
 ### Vývojový diagram
 ![flowchart](https://github.com/langrfrantisek/HzF_voting_system/blob/main/HzF_flowchart.png)
 *verze v PDF [zde](https://github.com/langrfrantisek/HzF_voting_system/blob/main/HzF_flowchart.pdf)*
+<br><br>
+### Popis programu
+Na začátku kódu se provede inicializace knihoven, pinů, proměnných a barevného pole pro animaci loga. Nastaví se také výchozí zobrazení displeje a přerušení časovače 2. Veškerý běh programu probíhá v ISR (Interrupt service routine) časovače 2. Časovač má nastavenou předděličku tak, aby se ISR spustila každých 16ms. V ISR se pomocí počítání kolikrát už smyčka proběhla volí, co se má v programu stát. Pokud nebylo stisknuto tlačítko, vyhledává se každé dva cykly ISR jestli nedošlo k jeho stisku. Vyhledávání zajišťuje funkce button_search() rozpozná, které tlačítko bylo stisknuto a rozsvítí příslušnou indikaci. Zavolá při rozpoznání stisknutého tlačítka funkci display_update() ta aktualizuje displej o nový počet hlasů a zavolá funkci sd_update(), která aktualizuje počet hlasů na microSD kartě (připsáním nového řádku s aktuálním počtem hlasů). Po stisku tlačítka a zavolání potřebných funkcí program přestane na 100 cyklů ISR hledat stisknuté tlačítko. Po tuto dobu svítí indikace, které tlačítko bylo stisknuto a pokračuje animace loga pokud je zapnutá vypínačem LOGO na zadním panelu. Tato animace dělá krok každé 4 ISR. Animace probíhá otáčením definovaného pole barev okolo loga na předním panelu. Po uplynutí 100 cyklů od zmáčknutí tlačítka se indikace, které tlačítko bylo stisknuté zhasne a zařízení je připraveno na další hlasování.
 
 ### Programování
 Pro přístup k programovacím pinům je potřeba odšroubovat šroubek na krytce s nápisem "328P". **Je li připojen PC přes programátor k Arduinu, nesmí být zařízení napájeno z micro USB konektoru!** Stačí vypnout hlavní vypínač. Programátor a arduino mohou poté být při testování propojeny i při zapnutí zařízení **za předpokladu, že je programátor odpojen od PC/napájení během napájení zařízení z micro USB**. Pokud je programátor připojen k Arduinu (ne k PC) i při testování nového programu je kvůli rušení třeba odpojit svorku na desce programátoru, která projuje napájení programátoru a Arduino (adresovatelný LED pásek jinak blbne).\
-Pro programování je nutné použít převodník (např. Převodník [YP-05](https://www.hadex.cz/m435b-prevodnik-usbttl-modul-s-ft232rl/?gclid=CjwKCAjwmeiIBhA6EiwA-uaeFRXA4soPKs384wWb1vIK3xhRTusBXaXjJ_JUQO9WOdVvmTuzFmfkJxoCZpMQAvD_BwE)).\
+Pro programování je nutné použít programátor (např. Převodník [YP-05](https://www.hadex.cz/m435b-prevodnik-usbttl-modul-s-ft232rl/?gclid=CjwKCAjwmeiIBhA6EiwA-uaeFRXA4soPKs384wWb1vIK3xhRTusBXaXjJ_JUQO9WOdVvmTuzFmfkJxoCZpMQAvD_BwE)).\
 V Arduino IDE se jedná o desku "Arduino Pro or Pro Mini, ATmega328P (5V, 16MHz)". 
 
 ## Reference
+Knihovny: 
+* [LiquidCrystal_I2C.h](https://github.com/fmalpartida/New-LiquidCrystal/blob/master/LiquidCrystal_I2C.h) 
+* [FastLED.h](https://github.com/FastLED/FastLED)
+
 
 

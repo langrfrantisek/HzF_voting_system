@@ -49,7 +49,7 @@ Součástky jsou osazeny na pájivé pole a propojeny. Arduino a modul pro micro
 ![PCB](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/PCB_solo.jpg)
 
 #### Možnost rozšíření o další tlačítka
-V případě potřeby rozšíření o další tlačítka (například pro akci HzF Warm Up) je u propojovacích vodičů ještě jedna volná šroubovací svorka, která by šla snadno propojit s pinem A6 a vytvořit tak další datový vstup pro další dělič s tlačítky. Po vyvedení GND a VCC ze stávajícího pájivého pole s deličem by mohl vzniknout přídavný modul s dalšími tlačítky.
+V případě potřeby rozšíření o další tlačítka (například pro akci HzF Warm-Up) je u propojovacích vodičů ještě jedna volná šroubovací svorka, která by šla snadno propojit s pinem A6 a vytvořit tak další datový vstup pro další dělič s tlačítky. Po vyvedení GND a VCC ze stávajícího pájivého pole s deličem by mohl vzniknout přídavný modul s dalšími tlačítky.
 
 
 ## Software

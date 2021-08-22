@@ -2,6 +2,8 @@
 
 ### Cíle projektu
 Cílem projektu je vytvořit zařízení sloužící k počítání hlasů jednotlivých kapel na akci Hudba z FEKTu. Zařízením má být možné hlasovat až pro šest kapel a průběžné hlasy mají být k nahlédnutí na displeji.
+<br><br>
+![front](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/front.jpg)
 
 ## O projektu
 Tento projekt se zabývá vytvořením zařízení, které dokáže počítat, zobrazovat a zaznamenávat hlasy. Vytvořené hlasovací zařízení je vytištěné na 3D tiskárně z mnoha dílů a sešroubováno dobromady. Na přední straně je podsvícené logo akce Hudby z FEKTu. Pod magnety připevněným víkem se nachází šest tlačítek s indikací. Zadní panel, rovněž připevněn magnety je součástím víka a dá se spolu s ním složit za zařízení. Tímto složením se odkryje zadní panel na kterém se nachází LCD display, tři spínače, micro USB konektor, krytka s nápisem "328P" a 3D tištěný šroub se symbolem SD karty. Display zobrazuje aktuální počet hlasů jednotlivých kapel. Zařízení je napájeno pouze externě micro USB konektorem. V pravo od něj se nachází hlavní spínač, který zajišťuje zapínání a vypínání zařízení. Spínač s názvem "LCD" zapíná a vypíná podsvícení displeje. Spínač "LOGO" zapíná a vypíná podsvícení loga na předním panelu. Obojí možné vypnout například pro šetření energie při napájení z powerbanky. Šroub se symbolem SD karty po odšroubování umožní přístup k micro SD kartě. Pod krytkou "328P" se nachází programovací piny Arduina (viz sekce Software - Programování).
@@ -47,7 +49,7 @@ Součástky jsou osazeny na pájivé pole a propojeny. Arduino a modul pro micro
 ![PCB](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/PCB_solo.jpg)
 
 #### Možnost rozšíření o další tlačítka
-V případě potřeby rozšíření o další tlačítka (například pro akci HzF Warm Up) je u propojovacích vodičů ještě jedna volná šroubovací svorka, která by šla snadno propojit s pinem A6 a vytvořit tak další datový vstup pro další dělič s tlačítky. Po vyvedení GND a VCC ze stávajícího pájivého pole s deličem by mohl vzniknout přídavný modul s dalšími tlačítky.
+V případě potřeby rozšíření o další tlačítka (například pro akci HzF Warm-Up) je u propojovacích vodičů ještě jedna volná šroubovací svorka, která by šla snadno propojit s pinem A6 a vytvořit tak další datový vstup pro další dělič s tlačítky. Po vyvedení GND a VCC ze stávajícího pájivého pole s deličem by mohl vzniknout přídavný modul s dalšími tlačítky.
 
 
 ## Software
@@ -69,5 +71,15 @@ Knihovny:
 * [LiquidCrystal_I2C.h](https://github.com/fmalpartida/New-LiquidCrystal/blob/master/LiquidCrystal_I2C.h) 
 * [FastLED.h](https://github.com/FastLED/FastLED)
 
+## Fotky
+![open](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/open.jpg)
+![main](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/main.jpg)
+![logo](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/logo.jpg)
+![back](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/back.jpg)
+![open_back](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/open_back.jpg)
+![back_on](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/back_on.jpg)
+![panel](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/panel.jpg)
+![panel_closer](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/panel_closer.jpg)
+![glow](https://github.com/langrfrantisek/HzF_voting_system/blob/main/Photos/glow.jpg)
 
 

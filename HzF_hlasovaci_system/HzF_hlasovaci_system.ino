@@ -28,6 +28,7 @@ uint8_t colors[3][columns] = {
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
 const int chipSelect = 4;   // pin where SD card module CS pin is connected
+File myFile;
 
 const int ADCpin = A7;      // input pin for button - resistor ladder
 int ADCvalue = 0;           // variable to store the value coming from button - resistor ladder
@@ -46,6 +47,9 @@ int sixth_band_votes = 0;
 
 /************************************************************************************************/
 void setup() {
+
+  Serial.begin(9600);
+  
   // SD module settings
   SD.begin(chipSelect);         // SD module initialization
 
@@ -72,6 +76,9 @@ void setup() {
   TIMSK2 |= (1 << TOIE2);       // overflow interrupt on Timer2 enable
   sei();                        // Enable interrupts
 
+  delay(200);
+  sd_load();
+  
 }
 /************************************************************************************************/
 void loop() {
@@ -125,6 +132,57 @@ void display_update() {
 
   sd_update();  // store new number of votes on microSD card
 }
+
+void sd_load()
+{
+  int pos = 0;
+  String loaded = "";
+  char d[] = ":";
+  myFile = SD.open("hlasy.txt");
+  if (myFile) {
+    pos = myFile.size()-20;  //podívám se 20 znaků dozadu, takže po zavolání readline se objeví část předposledního zápisu a dalším voláním poslední zaápis                          
+    myFile.seek(pos);        
+    loaded = readLine();  
+    loaded = readLine();   
+
+    char str_array[loaded.length()];
+    loaded.toCharArray(str_array, loaded.length());
+    char* token = strtok(str_array, d);
+    first_band_votes = atoi(token);
+    second_band_votes = atoi(strtok(NULL, d));
+    third_band_votes = atoi(strtok(NULL, d));
+    fourth_band_votes = atoi(strtok(NULL, d));
+    fifth_band_votes = atoi(strtok(NULL, d));
+    sixth_band_votes = atoi(strtok(NULL, d));
+
+    // close the file:
+    myFile.close();
+  } else {
+    lcd.setCursor(0, 0);
+    lcd.print("SDerror");
+  }
+  display_update();
+}
+
+String readLine()
+{
+  String received = "";
+  char ch;
+  while (myFile.available())
+  {
+    ch = myFile.read();
+    if (ch == '\n')
+    {
+      return String(received);
+    }
+    else
+    {
+      received += ch;
+    }
+  }
+  return "";
+}
+
 // store new number of votes on microSD card (called by display_update();)
 void sd_update() {
   // if microSD card available open hlasy.txt (file created if not there)
